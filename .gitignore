@@ -1,0 +1,5 @@
+# local mount dir
+goss/*
+
+# gitkeep
+!.gitkeep
