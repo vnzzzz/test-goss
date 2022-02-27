@@ -8,7 +8,45 @@
 
 ## 環境
 
+- centos7
+- virtual box
 - mac
+
+## ディレクトリ構成
+
+概説
+
+- vagrant 設定は `./vagrant` 配下に用意する
+- ansible 設定は `./ansible` 配下に用意する
+
+構成
+
+- ディレクトリ構成
+
+  ```bash
+  .
+  ├── README.md
+  ├── ansible
+  │   ├── inventories
+  │   │   └── hosts
+  │   ├── roles
+  │   │   ├── goss
+  │   │   │   ├── files
+  │   │   │   │   ├── goss
+  │   │   │   │   └── goss.yaml
+  │   │   │   └── tasks
+  │   │   │       └── main.yml
+  │   │   └── yum
+  │   │       ├── files
+  │   │       │   └── nginx.repo
+  │   │       └── tasks
+  │   │           └── main.yml
+  │   └── site.yml
+  └── vagrant
+      └── test-centos7
+          ├── .vagrant
+          └── Vagrantfile
+  ```
 
 ## 手順
 
@@ -21,7 +59,7 @@
   ```
 
   バイナリ形式ですぐに実行可能なファイルとして取得される。
-  ansible で配るため、のちの工程で適当なディレクトリに移動させる。
+  ansible で配るため、のちの工程で`./ansible/roles/goss/files`に格納する。
 
 - ansible のインストール
 
@@ -49,7 +87,7 @@
   vagrant box add centos/7
   ```
 
-  provider を何にするか聞かれるので、`3) virtualbox`を選択する
+  provider を何にするか聞かれるので、`3) virtualbox`を選択する。
 
   インストールした box を確認するときは
 
@@ -59,7 +97,7 @@
 
 - ディレクトリ作成&移動する
 
-  仮想マシン作成用のディレクトリ`test-centos7`を作成し、Vagrantfile を作成
+  仮想マシン作成用のディレクトリ`test-centos7`を作成し、Vagrantfile を作成する。
 
   ```bash
   cd vagrant
@@ -73,7 +111,7 @@
   vagrant init centos/7
   ```
 
-  `config.vm.network "private_network"`の部分の設定は、バッティングしないよう適切な IP アドレスを設定する
+  `config.vm.network "private_network"`の部分の設定は、バッティングしないよう適切な IP アドレスを設定する。
 
 - VM を起動する
 
@@ -93,7 +131,7 @@
   vagrant ssh
   ```
 
-  素の ssh でログインするときは、
+  素の ssh でログインするときは、下記を実行する。
 
   ```bash
   ssh -i vagrant/test-centos7/.vagrant/machines/default/virtualbox/private_key vagrant@192.168.56.10
@@ -114,7 +152,7 @@
   ansible-playbook -i inventories/hosts site.yml
   ```
 
-  設定が正しければ、下記のように ansible の実行結果が表示され、その中で goss の実行結果が出力される
+  設定が正しければ、下記のように ansible の実行結果が表示され、その中で goss の実行結果が出力される。
 
   ```bash
   PLAY [target-servers] **********************************************************************************************************
