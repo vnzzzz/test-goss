@@ -5,6 +5,7 @@
 - goss を試す
 - goss バイナリは ansible で配る
 - テスト対象の VM は vagrant + virtualbox で作成する
+- 今回は「ansible で nginx サーバを構築 →goss で単体テスト」の流れを試す
 
 ## 環境
 
@@ -21,12 +22,12 @@
 
 構成
 
-- ディレクトリ構成
+- 最終的なディレクトリ構成
 
   ```bash
   .
   ├── README.md
-  ├── ansible
+  ├── ansible # ansible関連の設定を格納
   │   ├── inventories
   │   │   └── hosts
   │   ├── roles
@@ -42,10 +43,10 @@
   │   │       └── tasks
   │   │           └── main.yml
   │   └── site.yml
-  └── vagrant
+  └── vagrant # vagrant関連の設定を格納
       └── test-centos7
-          ├── .vagrant
-          └── Vagrantfile
+          ├── .vagrant # vagrantコマンドで自動生成 (サブディレクトリは省略)
+          └── Vagrantfile # vagrantコマンドで自動生成
   ```
 
 ## 手順
