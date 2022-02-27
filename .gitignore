@@ -1,5 +1,8 @@
-# local mount dir
+# goss
 goss/*
+
+# vagrant
+.vagrant
 
 # gitkeep
 !.gitkeep
