@@ -17,10 +17,11 @@
 - goss を github から取得する
 
   ```bash
-  curl -L https://github.com/aelsabbahy/goss/releases/download/v0.3.9/goss-linux-amd64 -o goss/goss
+  curl -L https://github.com/aelsabbahy/goss/releases/download/v0.3.9/goss-linux-amd64 -o goss
   ```
 
-  バイナリ形式ですぐに実行可能なファイルとしてインストールされる
+  バイナリ形式ですぐに実行可能なファイルとして取得される。
+  ansible で配るため、のちの工程で適当なディレクトリに移動させる。
 
 - ansible のインストール
 
@@ -71,6 +72,8 @@
   ```bash
   vagrant init centos/7
   ```
+
+  `config.vm.network "private_network"`の部分の設定は、バッティングしないよう適切な IP アドレスを設定する
 
 - VM を起動する
 
