@@ -1,0 +1,6 @@
+---
+  - hosts: target-servers
+    become: yes
+    roles:
+      - yum
+      - goss

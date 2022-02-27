@@ -4,5 +4,8 @@
 # vagrant
 .vagrant
 
+# ansible
+private_key
+
 # gitkeep
 !.gitkeep

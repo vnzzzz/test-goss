@@ -92,3 +92,98 @@
   ```bash
   vagrant ssh
   ```
+
+  素の ssh でログインするときは、
+
+  ```bash
+  ssh -i vagrant/test-centos7/.vagrant/machines/default/virtualbox/private_key vagrant@192.168.56.10
+  ```
+
+## ansible を利用して goss を実行
+
+- private_key をコピー
+
+  ```bash
+  cp vagrant/test-centos7/.vagrant/machines/default/virtualbox/private_key ansible/inventories/
+  ```
+
+- ansible playbook を実行
+
+  ```bash
+  cd ansible
+  ansible-playbook -i inventories/hosts site.yml
+  ```
+
+  設定が正しければ、下記のように ansible の実行結果が表示され、その中で goss の実行結果が出力される
+
+  ```bash
+  PLAY [target-servers] **********************************************************************************************************
+
+  TASK [Gathering Facts] *********************************************************************************************************
+  ok: [192.168.56.10]
+
+  TASK [yum : add nginx repo] ****************************************************************************************************
+  ok: [192.168.56.10]
+
+  TASK [yum : install nginx] *****************************************************************************************************
+  ok: [192.168.56.10]
+
+  TASK [yum : restart & enable nginx] ********************************************************************************************
+  changed: [192.168.56.10]
+
+  TASK [goss : Copy goss to remote host] *****************************************************************************************
+  changed: [192.168.56.10] => (item={'file': 'files/goss', 'mode': '751'})
+  changed: [192.168.56.10] => (item={'file': 'files/goss.yaml', 'mode': '666'})
+
+  TASK [goss : Exec Goss Validate] ***********************************************************************************************
+  changed: [192.168.56.10]
+
+  TASK [goss : Goss results] *****************************************************************************************************
+  ok: [192.168.56.10] => {
+  		"msg": {
+  				"changed": true,
+  				"cmd": [
+  						"./goss",
+  						"validate",
+  						"--format",
+  						"documentation"
+  				],
+  				"delta": "0:00:00.047702",
+  				"end": "2022-02-27 13:05:08.362238",
+  				"failed": false,
+  				"msg": "",
+  				"rc": 0,
+  				"start": "2022-02-27 13:05:08.314536",
+  				"stderr": "",
+  				"stderr_lines": [],
+  				"stdout": "Title: nginx が起動していること\nProcess: nginx: running: matches expectation: [true]\nTitle: 80 ポートをリッスンしていること\nPort: tcp:80: listening: matches expectation: [true]\nTitle: nginxの設定ファイルが存在すること\nFile: /etc/nginx/nginx.conf: exists: matches expectation: [true]\nTitle: nginx 1.20.2 がインストールされていること\nPackage: nginx: installed: matches expectation: [true]\nPackage: nginx: version: matches expectation: [[\"1.20.2\"]]\nTitle: nginx がサービスに登録されていること\nService: nginx: enabled: matches expectation: [true]\nService: nginx: running: matches expectation: [true]\nTitle: httpで疎通できること\nHTTP: http://localhost: status: matches expectation: [200]\n\n\nTotal Duration: 0.043s\nCount: 8, Failed: 0, Skipped: 0",
+  				"stdout_lines": [
+  						"Title: nginx が起動していること",
+  						"Process: nginx: running: matches expectation: [true]",
+  						"Title: 80 ポートをリッスンしていること",
+  						"Port: tcp:80: listening: matches expectation: [true]",
+  						"Title: nginxの設定ファイルが存在すること",
+  						"File: /etc/nginx/nginx.conf: exists: matches expectation: [true]",
+  						"Title: nginx 1.20.2 がインストールされていること",
+  						"Package: nginx: installed: matches expectation: [true]",
+  						"Package: nginx: version: matches expectation: [[\"1.20.2\"]]",
+  						"Title: nginx がサービスに登録されていること",
+  						"Service: nginx: enabled: matches expectation: [true]",
+  						"Service: nginx: running: matches expectation: [true]",
+  						"Title: httpで疎通できること",
+  						"HTTP: http://localhost: status: matches expectation: [200]",
+  						"",
+  						"",
+  						"Total Duration: 0.043s",
+  						"Count: 8, Failed: 0, Skipped: 0"
+  				]
+  		}
+  }
+
+  TASK [goss : Delete Goss] ******************************************************************************************************
+  changed: [192.168.56.10] => (item=/root/goss)
+  changed: [192.168.56.10] => (item=/root/goss.yaml)
+
+  PLAY RECAP *********************************************************************************************************************
+  192.168.56.10              : ok=8    changed=4    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+  ```

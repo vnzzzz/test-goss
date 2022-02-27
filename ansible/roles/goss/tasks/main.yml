@@ -1,0 +1,29 @@
+---
+- name: Copy goss to remote host
+  copy:
+    src: "{{ item.file }}"
+    dest: /root
+    mode: "{{ item.mode }}"
+  with_items:
+    - file: files/goss
+      mode: "751"
+    - file: files/goss.yaml
+      mode: "666"
+
+- name: Exec Goss Validate
+  command: ./goss validate --format documentation
+  args:
+    chdir: /root
+  register: goss_results
+
+- name: Goss results
+  debug:
+    msg: "{{ goss_results }}"
+
+- name: Delete Goss
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /root/goss
+    - /root/goss.yaml

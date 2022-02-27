@@ -1,0 +1,17 @@
+---
+- name: add nginx repo
+  copy:
+    src: files/nginx.repo
+    dest: /etc/yum.repos.d/
+    mode: 644
+
+- name: install nginx
+  yum:
+    name: nginx
+    state: latest
+
+- name: restart & enable nginx
+  systemd:
+    name: nginx.service
+    state: restarted
+    enabled: yes

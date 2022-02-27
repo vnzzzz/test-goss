@@ -1,0 +1,32 @@
+package:
+  nginx:
+    title: nginx 1.20.2 がインストールされていること
+    installed: true
+    versions:
+      - 1.20.2
+
+file:
+  /etc/nginx/nginx.conf:
+    title: nginxの設定ファイルが存在すること
+    exists: true
+
+service:
+  nginx:
+    title: nginx がサービスに登録されていること
+    enabled: true
+    running: true
+
+process:
+  nginx:
+    title: nginx が起動していること
+    running: true
+
+port:
+  tcp:80:
+    title: 80 ポートをリッスンしていること
+    listening: true
+
+http:
+  http://localhost:
+    title: httpで疎通できること
+    status: 200
