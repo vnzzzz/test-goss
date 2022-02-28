@@ -140,12 +140,6 @@
 
 ## ansible を利用して goss を実行
 
-- private_key をコピー
-
-  ```bash
-  cp vagrant/test-centos7/.vagrant/machines/default/virtualbox/private_key ansible/inventories/
-  ```
-
 - ansible playbook を実行
 
   ```bash
